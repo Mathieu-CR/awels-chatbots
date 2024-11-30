@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: droids
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: awelchatbots-deployment
+  namespace: droids
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: awelchatbots
+  template:
+    metadata:
+      labels:
+        app: awelchatbots
+    spec:
+      containers:
+      - name: awelchatbots
+        image: fbeawels/chatbots:0.2.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3001
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: REACT_APP_DROID_HOST
+          value: "droids.awels.io"
+        volumeMounts:
+        - mountPath: "/app/data"
+          name: data-volume
+        - mountPath: "/app/backend/auth"
+          name: auth-volume
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: data-pvc
+      - name: auth-volume
+        persistentVolumeClaim:
+          claimName: auth-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: awelchatbots-service
+  namespace: droids
+spec:
+  type: ClusterIP
+  selector:
+    app: awelchatbots
+  ports:
+    - port: 3001
+      targetPort: 3001
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-pvc
+  namespace: droids
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: auth-pvc
+  namespace: droids
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: awelschatbots-ingress
+  namespace: droids
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+spec:
+  rules:
+  - host: droids.awels.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: awelchatbots-service
+            port:
+              number: 3001
