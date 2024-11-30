@@ -15,7 +15,7 @@ const LoginPage = () => {
     try {
       // console.log(backendURL)
       const response = await axios.post(
-        //`${backendURL}/login`,
+        // `${backendURL}/login`,
         `/doLogin`,
         { username, password },
         { withCredentials: true } // Important pour inclure les cookies

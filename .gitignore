@@ -2,9 +2,13 @@
 
 # dependencies
 node_modules
+frontend/node_modules
+backend/node_modules
 data
+backend/data
 .pnp
 .pnp.js
+
 
 # testing
 coverage

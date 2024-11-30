@@ -6,28 +6,9 @@ Ce projet a été initialisé avec [Create React App](https://github.com/faceboo
 
 ### Réinstaller les modules Node.js
 
-Si vous travaillez sur plusieurs dossiers et que vous avez besoin d'installer les modules dans chaque projet, procédez comme suit :
-
-1. **Naviguez dans le dossier `page_maximus`** et installez les modules :
+**Naviguez dans le dossier `frontend/src/pages`** et installez les modules :
     ```bash
-    cd page_maximus
-    npm install
-    ```
-
-2. **Retournez au dossier principal** :
-    ```bash
-    cd ..
-    ```
-
-3. **Changez de dossier** vers `page_merlin` :
-    ```bash
-    cd page_merlin
-    npm install
-    ```
-
-4. **Changez de dossier** vers `page_supermid` :
-    ```bash
-    cd page_supermid
+    cd frontend/src/pages
     npm install
     ```
 
@@ -44,10 +25,17 @@ Suivez les instructions de configuration sur la [documentation officielle de Tai
 
 ### Démarrer le serveur de développement
 
-Après avoir installé les dépendances dans le dossier correspondant, démarrez le serveur avec :
+Après avoir installé les dépendances dans le dossier correspondant, construire le serveur avec :
 
 ```bash
-npm start
+cd frontend
+npm run build
+```
+
+Puis le démarrer à la racine avec :
+```bash
+export REACT_APP_DROID_HOST=<set your FQDN here>
+node server.js
 ```
 
 ### Fichier `index.html`
