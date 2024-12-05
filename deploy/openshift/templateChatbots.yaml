@@ -1,0 +1,110 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels: 
+  app: awels-chatbots
+  template: awels-chatbots
+message: This template creates new chatbots from Awels Engineering.
+metadata:
+  name: awels-chatbots
+  annotations:
+    tags: nodejs
+    iconClass: icon-nodejs
+    openshift.io/display-name: The Awels Chatbots template
+    description: This Template creates new chatbots from Awels Engineering.
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ${APPLICATION_NAME}-svc
+    labels:
+      chatbots: ${APPLICATION_NAME}
+  spec:
+    type: ClusterIP
+    selector:
+      app: ${APPLICATION_NAME}
+    ports:
+      - port: 3001
+        targetPort: 3001
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ${APPLICATION_NAME}-data-pvc
+    labels:
+      chatbots: ${APPLICATION_NAME}
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ${APPLICATION_NAME}-auth-pvc
+    labels:
+      chatbots: ${APPLICATION_NAME}
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: ${APPLICATION_NAME}-deployment
+    labels:
+      chatbots: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: ${APPLICATION_NAME}
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        containers:
+        - name: awelschatbots
+          image: image-registry.openshift-image-registry.svc:5000/droids-awels/awels-chatbots:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 3001
+          env:
+          - name: NODE_ENV
+            value: "production"
+          - name: REACT_APP_DROID_HOST
+            value: "droids.awels.io"
+          volumeMounts:
+          - mountPath: "/app/data"
+            name: data-volume
+          - mountPath: "/app/backend/auth"
+            name: auth-volume
+        volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: ${APPLICATION_NAME}-data-pvc
+        - name: auth-volume
+          persistentVolumeClaim:
+            claimName: ${APPLICATION_NAME}-auth-pvc
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}-deployment
+    labels:
+      chatbots: ${APPLICATION_NAME}
+  spec:
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}-svc
+      weight: 100
+    port:
+      targetPort: 3001
+    wildcardPolicy: None
+parameters:
+- name: APPLICATION_NAME
+  description: The name of the chatbots app you’d like to create
+  displayName: Chatbots Application Name
+  required: true
+  value: awels-chatbots
