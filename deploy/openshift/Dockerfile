@@ -5,15 +5,15 @@ FROM node:18
 WORKDIR /app
 
 # Copier et installer les dépendances pour le backend
-COPY /backend/package*.json ./backend/
-COPY /backend/server.js ./backend/
-COPY /backend/auth/auth.json ./backend/auth/
+COPY backend/package*.json ./backend/
+COPY backend/server.js ./backend/
+COPY backend/auth/auth.json ./backend/auth/
 
 # Copier et installer les dépendances pour le frontend
-COPY /frontend/public ./frontend/public/
-COPY /frontend/src ./frontend/src/
-COPY /frontend/package*.json ./frontend/
-COPY /frontend/*.config.js ./frontend/
+COPY frontend/public ./frontend/public/
+COPY frontend/src ./frontend/src/
+COPY frontend/package*.json ./frontend/
+COPY frontend/*.config.js ./frontend/
 
 # Construire le frontend
 RUN cd frontend && \

@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  namespace: droids-awels
+  name: awels-chatbots
+spec:
+  source:
+    type: Git
+    contextDir: /
+    git:
+      uri: 'https://github.com/fbeawels/awels-chatbots.git'
+      ref: main
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: deploy/openshift/Dockerfile
+      from:
+        kind: DockerImage
+        name: 'docker.io/library/node:18'
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'awels-chatbots:latest'
