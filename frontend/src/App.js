@@ -8,6 +8,7 @@ import PageMaximus from "./pages/AppMaximus";
 import PageMerlin from "./pages/AppMerlin";
 import PageSuperMid from "./pages/AppSuperMid";
 import PageColbert from "./pages/AppColbert";
+import PageThready from "./pages/AppThready";
 
 function App() {
   return (
@@ -52,6 +53,14 @@ function App() {
           element={
             <ProtectedRoute>
               <PageSuperMid />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Thready"
+          element={
+            <ProtectedRoute>
+              <PageThready />
             </ProtectedRoute>
           }
         />

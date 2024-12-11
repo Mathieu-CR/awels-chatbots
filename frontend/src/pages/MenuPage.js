@@ -28,7 +28,7 @@ function MenuPage() {
 
     fetchAuthStatus();
   }, [navigate]);
-
+  
   const handleLogout = async () => {
     try {
       // const backendURL = process.env.REACT_APP_BACKEND_URL;
@@ -61,20 +61,24 @@ function MenuPage() {
           </button>
         </Link>
         <Link to="/Colbert">
-          <button className="w-full bg-yellow-200 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition">
+          <button className="w-full bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition">
             Page Colbert
           </button>
         </Link>
+        <Link to="/Thready">
+          <button className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition">
+            Page Thready
+          </button>
+        </Link>
         <Link to="/Supermid">
-          <button className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition">
+          <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition">
             Page SuperMid
           </button>
         </Link>
         {user && (
           <button
             onClick={handleLogout}
-            className="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition"
-          >
+            className="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition">
             Se déconnecter
           </button>
         )}
