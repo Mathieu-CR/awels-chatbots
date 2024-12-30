@@ -90,7 +90,7 @@ function MenuPage() {
           {user && (
             <button
               onClick={handleLogout}
-              className="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition"
+              className="w-1/3 bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition"
             >
               Se déconnecter
             </button>
