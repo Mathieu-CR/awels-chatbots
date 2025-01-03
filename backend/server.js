@@ -64,10 +64,15 @@ app.post('/doRegister', (req, res) => {
       return res.status(409).send({ message: 'User already exists' });
     }
     users.push({ username, password });
-    fs.writeFile(AUTH_FILE, JSON.stringify({ users }, null, 2), (err) => {
-      if (err) return res.status(500).send({ message: 'Failed to save user' });
-      res.status(201).send({ message: 'User registered successfully' });
+fs.writeFile(AUTH_FILE, JSON.stringify({ users }, null, 2), (err) => {
+  if (err) {
+    return res.status(500).send({ 
+      message: 'Failed to save user', 
+      error: err.message // Inclut l'erreur détaillée
     });
+  }
+  res.status(201).send({ message: 'User registered successfully' });
+});
   });
 });
 
