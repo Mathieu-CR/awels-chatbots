@@ -27,6 +27,8 @@ RUN cd frontend && \
 # Lier le frontend au backend (symbolique)
 RUN cd backend && ln -s ../frontend/ public
 
+RUN chmod 777 /app/backend/auth/auth.json
+
 # Assurer que les permissions sont correctes pour les fichiers générés
 RUN mkdir -p /app/backend/data && chown -R 1000:1000 /app
 
