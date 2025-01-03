@@ -66,13 +66,12 @@ app.post('/doRegister', (req, res) => {
     users.push({ username, password });
 fs.writeFile(AUTH_FILE, JSON.stringify({ users }, null, 2), (err) => {
   if (err) {
-    return res.status(500).send({ 
-      message: 'Failed to save user', 
-      error: err.message // Inclut l'erreur détaillée
-    });
+    // Remplace le message générique par le message d'erreur spécifique
+    return res.status(500).send({ message: err.message });
   }
   res.status(201).send({ message: 'User registered successfully' });
 });
+
   });
 });
 
