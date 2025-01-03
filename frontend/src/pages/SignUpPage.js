@@ -31,7 +31,15 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-gray-200">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen text-gray-200"
+      style={{
+        backgroundImage: `linear-gradient(to left, #092033, #113a55, #1c4978, #28589c, #356abf)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <h1 className="text-2xl font-bold mb-6">Créer un compte</h1>
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         <input

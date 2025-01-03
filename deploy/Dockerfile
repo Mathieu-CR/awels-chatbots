@@ -6,29 +6,32 @@ WORKDIR /app
 
 # Copier et installer les dépendances pour le backend
 COPY ./backend/package*.json ./backend/
-COPY ./backend/server.js ./backend/
-COPY ./backend/auth/auth.json ./backend/auth/
+RUN cd backend && npm install --production
+
+# Copier le reste des fichiers backend
+COPY ./backend/ ./backend/
 
 # Copier et installer les dépendances pour le frontend
-COPY ./frontend/public ./frontend/public/
-COPY ./frontend/src ./frontend/src/
 COPY ./frontend/package*.json ./frontend/
-COPY ./frontend/*.config.js ./frontend/
+RUN cd frontend && npm install
+
+# Copier les fichiers frontend restants
+COPY ./frontend/ ./frontend/
 
 # Construire le frontend
 RUN cd frontend && \
     npm install -D tailwindcss postcss autoprefixer && \
-    npx tailwindcss init
-RUN cd frontend && \
+    npx tailwindcss init && \
     npm run build
 
-# Construire le backend
-RUN cd backend && \
-    ln -s ../frontend/ frontend && \
-    npm install --production
+# Lier le frontend au backend (symbolique)
+RUN cd backend && ln -s ../frontend/ public
+
+# Assurer que les permissions sont correctes pour les fichiers générés
+RUN mkdir -p /app/backend/data && chown -R 1000:1000 /app
 
 # Exposer les ports utilisés par le backend et le frontend
 EXPOSE 3001
 
-# Lancer simultanément le backend et un serveur pour le frontend
+# Lancer simultanément le backend
 CMD ["sh", "-c", "node backend/server.js"]
